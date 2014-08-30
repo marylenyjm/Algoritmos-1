@@ -1,0 +1,154 @@
+// Laboratorio 4.cpp : main project file.
+
+#include "stdafx.h"
+#include <conio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+
+using namespace std;
+
+void cargar_vector(int vec[], int n)
+{ int i;
+  
+  for(i=0;i<n;i++)
+   {
+	cout<<endl<<"Ingresar el elemento del vec[" <<i+1<< "]: ";
+	cin>>vec[i];
+   }
+ 
+}
+void mostrar(int vec[],int n)
+{ int i;
+  for(i=0;i<n;i++)
+  {cout<< vec[i] << "   ";
+  }
+}
+ 
+void invertir(int vec[], int n)
+{ int aux=0, i,j=n-1;
+for(i=0;i<(n/2);i++)
+   { aux= vec[i];
+     vec[i]=vec[j];
+     vec[j]=aux;
+     j--;
+   }
+}
+ 
+void burbuja(int vec[],int n)
+{ int aux=0,i,j;
+  for(i=0;i<(n-1);i++)
+     { for(j=i;j<n;j++)
+         { if(vec[i]<vec[j])
+             {aux=vec[i];
+              vec[i]=vec[j];
+              vec[j]=aux;
+             }
+         }
+    }
+  
+}
+
+void burbujaasc(int vec[],int n)
+{ int aux=0,i,j;
+  for(i=0;i<(n-1);i++)
+     { for(j=i;j<n;j++)
+         { if(vec[i]<vec[j])
+             {aux=vec[i];
+              vec[i]=vec[j];
+              vec[j]=aux;
+             }
+         }
+    }
+  
+}
+ 
+void busquedalineal(int vec[], int n)
+{int i,num;
+cout<<endl<<" Ingrese el numero que desea buscar: ";
+cin>>num;
+   for(i=0;i<n;i++)
+     { if(num==vec[i])
+   { cout<<endl<<" El numero" <<num<< " esta en la pos: " <<i+1;
+        }
+   }
+}
+ 
+void busquedabinaria(int vec[], int n)
+{	int num;
+	cout<<endl<<" Ingrese el numero que desea buscar: ";
+	cin>>num;
+    int primero = 0;
+    int medio;
+    int ultimo=(n-1);
+ 
+    while (primero <= ultimo) 
+	{
+        medio = ((primero + ultimo)/2);
+ 
+        if (num == vec[medio]) 
+		{
+            cout << "Se encuentra en la posición " << (medio + 1) << endl;
+          //cout<<" vec[medio]" ;
+        } 
+		else 
+		{
+            if (vec[medio]>num) 
+			{
+                ultimo = medio-1;
+            } 
+			else 
+			{
+                primero = medio+1;
+            }
+        }
+    }
+}
+ 
+ 
+int main()
+{ int opcion, vec[20], n;
+     do
+     { cout<<endl<<"MENU"<<endl;
+       cout<<endl<<"1 Cargar vector ";
+       cout<<endl<<"2 Mostrar vector ";
+       cout<<endl<<"3 Invertir vector ";
+       cout<<endl<<"4 Clasificar vector ";
+       cout<<endl<<"5 Busqueda Binaria ";
+       cout<<endl<<"6 Busqueda Lineal ";
+       cout<<endl<<"7 Salir ";
+       cout<<endl<<"Opcion ";
+       cin>>opcion;
+	
+
+       switch(opcion)
+       {
+       case 1:	cout<<endl<<"Ingrese el numero de elementos del vector: ";
+				cin>>n;
+				cargar_vector(vec,n);
+           break;
+       case 2:	mostrar(vec,n);
+           break;
+       case 3:	invertir(vec,n);
+				mostrar(vec,n);
+           break;
+       case 4:	burbuja(vec,n);
+				mostrar(vec,n);
+           break;
+       case 5:  burbujaasc(vec,n);
+				cout<<"El vector ordenado sera: ";
+				mostrar(vec,n);
+				busquedabinaria(vec,n);  
+           break;
+       case 6:	busquedalineal(vec,n);
+          break;
+ 
+}
+ 
+        }while(opcion!=0);
+     getch();
+     return 0;
+ 
+}
+ 
