@@ -1,0 +1,88 @@
+// laboratorio matrices de Mary Leny.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "conio.h"
+#include <iostream>
+#include "math.h"
+
+using namespace std;
+# define fil 100
+# define col 100
+
+void cargarMat(int mat[fil][col],int n, int m)
+{
+	int i,j;
+	for(i=0;i<n;i++)
+	{
+		for (j=0;j<m;j++)
+		{
+			cout<<"Introducir Dato: ";
+			cin>>mat[i][j];
+		}
+	}
+}
+
+void mostrarMat(int mat[fil][col],int n, int m)
+{
+	int i,j;
+	for(i=0;i<n;i++)
+	{
+		for (j=0;j<m;j++)
+		{
+			cout<<mat[i][j]<<"\t";
+		}
+	cout<<endl;
+	}
+}
+
+void sumaDeMatrices(int mat[fil][col],int matr[fil][col],int n, int m,int C[fil][col])
+{
+	int i,j;
+
+	for(i=0;i<n;i++)
+	{
+		for (j=0;j<m;j++)
+		{
+			C[i][j]=mat[i][j]+matr[i][j];
+
+		}
+	}
+	mostrarMat(C,n,m);
+	cout<<"\n";
+}
+
+
+
+int main ()
+{
+	int opcion=0,n,m;
+	int mat[fil][col],matr[fil][col],C[fil][col];
+
+	do{
+	cout<<"-------MENU-------\n";
+	cout<<"1. Sumar dos matrices"<<endl;
+	cout<<"2. Serie de Fibonacci"<<endl;
+	cout<<"3. Matriz"<<endl;
+	cout<<"Opcion: "<<endl;
+	cin>>opcion;
+
+	switch (opcion)
+		case 1: cout<<"Para cargar la matriz 1 introduzca: \n";
+				cout<<"Numero de filas: ";
+				cin>>n;
+				cout<<"Numero de columnas: ";
+				cin>>m;
+				cargarMat(mat,n,m);
+				cout<<"\n\n Cargue la matriz 2: \n" ;
+				cargarMat(matr,n,m);
+				
+				sumaDeMatrices(mat,matr,n,m,C); 
+
+	}
+	while(opcion!=0);
+	return 0;
+}
+
+
+
