@@ -1,0 +1,39 @@
+// labarchivos.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "stdio.h"
+#include "conio.h"
+#include "stdlib.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+struct est_alumno 
+{
+	int matricula;
+	char nombre[30];
+	int edad;
+};
+
+void main() 
+{
+	est_alumno alumno;
+	system("cls");// captura de campos
+	cout <<"dame matricula :";
+	cin>>alumno.matricula;getchar();
+	cout <<"dame nombre :";
+	gets(alumno.nombre);
+	cout <<"dame edad :";
+	cin>>alumno.edad;// grabando a disco
+	
+	FILE *archdisco; //alias
+
+	archdisco = fopen("alumnos.txt","a+");
+	fwrite(&alumno,sizeof(alumno),1,archdisco);
+	fclose(archdisco);//avisando usuario
+	cout<<"alumno insertado";
+	getchar();getchar();
+
+}
