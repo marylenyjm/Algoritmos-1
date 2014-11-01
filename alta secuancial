@@ -1,0 +1,95 @@
+// arch.cpp : Defines the entry point for the console application.
+//
+#include "stdafx.h"
+#include "stdio.h"
+#include "conio.h"
+#include "stdlib.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+void ALTA_SECUENCIAL();
+
+struct tipo_registro {
+
+int no_prod;
+char descrip[30];
+int cantidad;
+float precio;
+char garantia;
+};
+
+tipo_registro Registro;
+
+FILE *alias;
+                   
+
+void ALTA_SECUENCIAL()
+{ 
+int no_prod;
+system("cls");
+cout<<"\n\rALTAS DE REGISTROS DE PRODUCTOS";
+alias=fopen("PRODUCTO.SEC","rb+");
+
+if (alias==NULL)
+alias=fopen("PRODUCTO.SEC","wb");
+cout<<"\n\n\n\rNumero de producto:  ";
+cin>>no_prod;
+
+fread(&Registro,sizeof(Registro),1,alias);
+while(!feof(alias))
+{
+	if (Registro.no_prod==no_prod)
+	{ cout<<"\n\n\n\rRegistro dupicado!!!!";
+	  fclose(alias);
+	  getch();
+	  return;
+	}
+fread(&Registro,sizeof (Registro),1,alias);
+}
+getchar();
+cout<<"\n\rDescripcion: ";gets(Registro.descrip);
+cout<<"\n\rCantidad: ";
+cin>>Registro.cantidad;
+cout<<"\n\rPrecio:";
+cin>>Registro.precio;
+do
+{
+	cout<<"\n\rGarantia: ";
+	Registro.garantia=toupper(getche());
+}
+while(Registro.garantia!='S'&& Registro.garantia!='N');
+Registro.no_prod=no_prod;
+fwrite(&Registro,sizeof(Registro),1,alias);
+fclose(alias);
+cout<<"\n\n\n\rProducto registrado!!!";
+cout<<"\n\r<<< Oprima cualquier tecla para continuar>>>";
+getch();
+return;
+}
+
+
+
+int main()
+{
+
+system("cls");
+int op;
+do
+	{
+	cout<<"-------MENU-------"<<endl;
+	cout<<"1. Alta secuencial"<<endl;
+	cout<<"0. salir"<<endl;
+	cin>>op;
+	switch (op)
+	{
+		case 1: ALTA_SECUENCIAL();break;
+		
+	}
+    } while (op!=0);
+	getch();
+	return 0;
+	
+	
+}
