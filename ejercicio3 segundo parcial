@@ -1,0 +1,112 @@
+#include "stdio.h"
+#include "conio.h"
+#include <string>
+#include <iostream>
+using namespace std;
+
+struct Matriz 
+{
+ int mat[10][10];
+ int fil,col;
+};
+
+void Mostrar_Matriz_Matriz(Matriz M[][10],int f, int c)
+{int i,j,k,l;
+ cout<<endl<<"MOSTRANDO MATRIZ... "<<endl;
+  for(i=0;i<f;i++)
+	{for(j=0;j<c;j++)
+		{for(k=0;k<M[i][j].fil;k++)
+			{for(l=0;l<M[i][j].col;l++)
+				{cout<<" "<<M[i][j].mat[k][l];
+				}
+			 cout<<endl;
+			}
+		  cout<<"\t";
+		}
+	 cout<<endl;
+	}
+}
+
+void Llenar_Matriz_Matriz(Matriz M[][10],int f, int c)
+{int i,j,k,l;
+ for(i=0;i<f;i++)
+	{for(j=0;j<c;j++)
+		{cout<<endl<<"INGRESE FILAS SUBMATRIZ: ";
+		 cin>>M[i][j].fil;
+		 cout<<endl<<"INGRESE COLUMNAS SUBMATRIZ: ";
+		 cin>>M[i][j].col;
+		 for(k=0;k<M[i][j].fil;k++)
+			{for(l=0;l<M[i][j].col;l++)
+				{cout<<endl<<"M["<<i<<"]["<<j<<"]["<<k<<"]["<<l<<"]: ";
+				 cin>>M[i][j].mat[k][l];
+				}
+			}
+		}
+	}
+ cout<<endl;
+ Mostrar_Matriz_Matriz(M,f,c);
+}
+
+int Verificar_Fibo(int numero)
+{int V[50],a,b,fibo,i,bandera=0;
+ a = 1;
+ b = 0;
+ while(i <= 20)		//genero 20 primeros fibonacis para poder comparar despues XD
+ {fibo = a+b;
+  a = b;
+  b = fibo;
+  V[i] = fibo;
+  i++;
+ }
+for(i=0;i<=20;i++)
+	{if(V[i] == numero)
+		{bandera = 1;
+		 i = 21;
+		}
+	}
+return bandera;
+}
+
+void Eliminar_Columna(int marca, Matriz M[][10], int f, int c)
+{int i,j;
+ Matriz aux[10][10];
+ for(i=0;i<f;i++)
+	{for(j=marca;j<c;j++)
+		{aux[i][j] = M[i][j];
+		 M[i][j] = M[i][j+1];
+		 M[i][j+1] = aux[i][j];
+		}
+	}
+}
+
+void Ejercicio(Matriz M[][10],int f, int &c)
+{int i,j,k,l,suma,marca=0;
+ int Vector_marca[10],posi=0;
+ suma = 0;
+ for(i=0;i<f;i++)
+	{for(j=0;j<c;j++)
+		{suma = 0;
+		 for(k=0;k<M[i][j].fil;k++)
+			{for(l=0;l<M[i][j].col;l++)
+				suma += M[i][j].mat[k][l];
+			}
+		 if(Verificar_Fibo(suma) == 1)
+		   { Eliminar_Columna(j,M,f,c);
+			 c--;
+		   } 
+       }
+    }
+}
+
+void main()
+{struct Matriz M[10][10];
+ int f,c;
+ cout<<endl<<"INGRESE FILA: ";
+ cin>>f;
+ cout<<endl<<"INGRESE COLUMNA: ";
+ cin>>c;
+ Llenar_Matriz_Matriz(M,f,c);
+ Ejercicio(M,f,c);
+ Mostrar_Matriz_Matriz(M,f,c);
+getch();
+}
