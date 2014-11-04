@@ -1,0 +1,80 @@
+#include "stdio.h"
+#include "conio.h"
+#include <string>
+#include <iostream>
+using namespace std;
+
+struct Matriz
+{string palabra;
+};
+
+void Meter_Matriz(Matriz V[], Matriz M[][10], int limite)
+{int i,j,k;
+k = 0;
+string aux;
+
+ for(i=0;i<limite;i++)
+	{for(j=0;j<limite;j++)
+		{aux = V[k].palabra;
+		  M[i][j].palabra = aux;
+		  k++;
+		}
+	}
+}
+
+void Llenar_Matriz(string frase,int n, Matriz M[][10])
+{ Matriz V[50];
+  int i,dimension,posicion_espacio,inicio,tope,posi;
+  string minipalabra,copia;
+  copia = frase;
+  dimension = copia.size();
+  inicio = 0;
+  posi = 0;
+  i = 0;
+  int dimen_total = (n*n);
+  int contador_letras = 0;
+  tope = copia.size();
+  while(i <= dimension)
+	{if(copia[i] == ' ' || i == tope)
+		{ posicion_espacio = i;
+		  inicio = -1 * (contador_letras - posicion_espacio);
+		  minipalabra = copia.substr(inicio,contador_letras);
+		  V[posi].palabra = minipalabra;
+		  posi++;
+		  contador_letras = 0;
+		}
+	 else
+	  contador_letras++;
+	 i++;
+	 if(posi == dimen_total)
+		dimension = -1;					//punto de quiebre del bucle
+	 if(i > dimension)
+		{i = 0;
+	     contador_letras = 0;
+		}
+	}
+  Meter_Matriz(V,M,n);
+}
+
+
+
+void Mostrar_Matriz(Matriz M[][10],int n)
+{int i,j;
+ for(i=0;i<n;i++)
+	{for(j=0;j<n;j++)
+		{cout<<"\t"<<M[i][j].palabra;
+		}
+	 cout<<endl;
+	}
+}
+
+void main()
+{struct Matriz M[10][10];
+ int n;
+ string frase = "Suerte en tu examen de Algoritmos";
+ cout<<"\n NUMERO DE FILAS Y COLUMNAS: ";
+ cin>>n;
+ Llenar_Matriz(frase,n,M);
+ Mostrar_Matriz(M,n);
+getch();
+}
