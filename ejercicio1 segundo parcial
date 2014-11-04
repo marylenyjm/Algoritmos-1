@@ -1,0 +1,118 @@
+// ejercicio1segundoparcial.cpp : Defines the entry point for the console application.
+//Integrantes:Dayana Rubin de Celis, Mary Leny Justiniano, Arturo Arnez
+
+#include "stdafx.h"
+#include "stdio.h"
+#include "conio.h"
+#include <iostream>
+
+using namespace std;
+
+struct Matriz
+{
+int V[10];
+int tam;
+};
+
+void Llenar_Matriz(Matriz M[][10],int filas, int columnas)
+{int i,j,k;
+cout<<"\n LLENANDO LOS VECTORES: ";
+ for(i=0;i<filas;i++)
+	{for(j=0;j<columnas;j++)
+		{cout<<endl<<"\nDIMENSION VECTOR: ";
+		 cin>>M[i][j].tam;
+		  for(k=0;k<M[i][j].tam;k++)
+			{cout<<endl<<"M["<<i<<"]["<<j<<"]["<<k<<"]: ";
+			 cin>>M[i][j].V[k];
+			}
+		}
+	}
+}
+
+int Verificar_Primo(int numero)
+{int i,j,cont,bandera = 0,residuo;
+ if(numero == 1)
+	 bandera = 1;
+ else
+ {cont = 0;
+  for(i=1;i<=numero;i++)
+	{residuo = numero%i;
+	 if(residuo == 0)
+		 cont++;
+	}
+  if(cont == 2)
+	  bandera = 1;
+ }
+ return bandera;
+}
+
+void Ordenar(int V[], int dimension)
+{int i,j,numero;
+   for(i=0;i<dimension-1;i++)
+	{for(j=i+1;j<dimension;j++)
+		{if(V[i] > V[j])
+			{numero = V[i];
+			 V[i] = V[j];
+			 V[j] = numero;
+			}
+		}
+	}
+}
+
+void Ejercicio(Matriz M[][10],int filas, int columnas)
+{int i,j,k,l;
+ int V[100];
+ l=0;
+  for(i=0;i<filas;i++)
+	{for(j=0;j<columnas;j++)
+		{for(k=0;k<M[i][j].tam;k++)
+			{if(Verificar_Primo(M[i][j].V[k]) == 1)
+				{V[l] = M[i][j].V[k];
+				 l++;
+				}
+			}
+		}
+	}
+  Ordenar(V,l);
+  int cont = l;
+  l = 0;
+  for(i=0;i<filas;i++)
+   {for(j=0;j<columnas;j++)
+	 {for(k=0;k<M[i][j].tam;k++)
+		{if(Verificar_Primo(M[i][j].V[k]) == 1)
+			{M[i][j].V[k] = V[l];
+			 l++;
+			}
+		}
+	 }
+   }
+}
+
+void Mostrar_Matriz(Matriz M[][10],int filas, int columnas)
+{int i,j,k;
+cout<<endl<<"MOSTRANDO MATRIZ: "<<endl;
+	for(i=0;i<filas;i++)
+	{for(j=0;j<columnas;j++)
+		{for(k=0;k<M[i][j].tam;k++)
+			{cout<<"  "<<M[i][j].V[k]<<"\t";
+			}
+	cout<<"\t";
+		}
+	cout<<endl<<endl;
+	}
+}
+
+void main()
+{struct Matriz M[10][10];
+ int filas,columnas;
+ cout<<"\n NUMERO DE FILAS: ";
+ cin>>filas;
+ cout<<"\n NUMERO DE COLUMNAS: ";
+ cin>>columnas;
+ Llenar_Matriz(M,filas,columnas);
+ Mostrar_Matriz(M,filas,columnas);
+ Ejercicio(M,filas,columnas);
+ cout<<endl<<"MATRIZ ORDENADA..."<<endl;
+ Mostrar_Matriz(M,filas,columnas);
+getch();
+}
