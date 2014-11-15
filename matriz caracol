@@ -1,0 +1,116 @@
+
+#include <stdafx.h>
+#include <conio.h>
+#include <iostream>
+#include <stdio.h>
+ using namespace std;
+
+void procesa_matriz(int grado, int m[50][50])
+{
+  int dir;
+  int con;
+
+  dir = 1;
+  con = 1;
+  for (int i=0; i< grado; i++)
+  {
+    // Izquierda a Derecha
+	if (dir == 1)
+	{
+	  for( int j=0; j < grado; j++)
+	  {
+		if (m[i][j] == 0)
+		{
+		  m[i][j] = con;
+		  con = con + 1;
+		}
+	  }
+	}
+  
+    dir = dir + 1;
+ 
+	// Arriba a Abajo
+	if (dir == 2)
+	{
+	  for( int j=0; j < grado; j++)
+	  {
+		if (m[j][grado-(i+1)] == 0)
+		{
+		  m[j][grado-(i+1)]=con;
+		  con = con + 1;
+	    }
+	  }
+	}
+ 
+	dir = dir + 1;
+
+	// Derecha a Izquierda
+	if (dir == 3)
+	{
+	  for (int j=grado-1; j>=0; j--)
+	  {
+		if (m[grado-(i+1)][j] == 0)
+		{
+		  m[grado-(i+1)][j]=con;
+		  con = con + 1;
+		}
+	  }
+    }
+
+	dir = dir + 1;
+ 
+	// Abajo a Arriba 
+	if (dir == 4)
+	{
+	  for (int j=grado-1; j>=0; j--)
+	  {
+		if (m[j][i] == 0)
+		{
+		  m[j][i] = con;
+		  con = con + 1;
+		}
+	  }
+	}
+
+	dir = 1;
+  }
+}
+
+void main()
+{
+  int dir;  //1 izq a derecha, 2 arr a aba, 3, der a izq, 4 aba a arr
+  int con;
+  int m[50][50];
+  int grado;
+
+  printf("Digite el Grado de la Matriz:");
+  scanf("%i", &grado);
+
+  // Inicializa la matriz en 0
+  for (int k=0; k < grado; k=k+1)
+  {
+	  for(int j=0; j < grado; j=j+1)
+	  {
+		 m[k][j]=0;
+	  }
+  }
+
+  // Genera Matriz
+  procesa_matriz(grado, m);
+
+  // Imprime Matriz
+  for(int i=0; i < grado; i++)
+  {
+    for(int j=0; j < grado; j++)
+    {
+	  if (m[i][j] < 10)
+	  {
+	    printf(" ");
+	  }
+	  printf("%i ", m[i][j]);
+    }
+	printf("\n");
+  }
+
+  getch();
+ }
