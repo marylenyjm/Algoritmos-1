@@ -1,0 +1,301 @@
+#include "stdafx.h"
+#include "stdio.h" // Para el manejo de archivos
+#include <string> // Para el manejo de cadenas
+#include "conio.h" // Para el manejo de clrscr
+#include <iostream> // Para el manejo de cout
+#include "ctype.h" // Para el uso de toupper
+#include "stdlib.h"
+
+using namespace std;
+
+struct tipo_registro
+{
+  int no_prod;
+  char descrip[30];
+  int cantidad;
+  float precio;
+  char garantia;
+};
+tipo_registro Registro;
+long int dir_fisica;
+FILE *alias;
+
+void ALTA_DIRECTA(void);
+void CONSULTA_DIRECTA(void);
+void MODIFICACION_DIRECTA(void);
+void BAJA_LOGICA_DIRECTA(void);
+void LISTADO_SEC_DIR(void);
+
+void main()
+{
+ int opcion;
+ do{
+   cout<<"\tMENU\n";
+   cout<<"\t====\n";
+   cout<<"1. Altas Directas\n";
+   cout<<"2. Consultas Directas\n";
+   cout<<"3. Modificación Directas\n";
+   cout<<"4. Baja Lógica Directas\n";
+   cout<<"5. Listado\n";
+   cout<<"0. Salir\n";
+   cout<<"Ingrese la opcion: ";
+   cin>>opcion;
+   switch (opcion)
+   {
+     case 1:
+             ALTA_DIRECTA();
+             break;
+     case 2:
+             CONSULTA_DIRECTA();
+             break;
+     case 3:
+             MODIFICACION_DIRECTA();
+             break;
+     case 4:
+             BAJA_LOGICA_DIRECTA();
+             break;
+     case 5:
+             LISTADO_SEC_DIR();
+             break;
+     case 0:
+             cout<<"Salir\n";
+             break;
+     default:
+             cout<<"Opcion invalida\n";
+   };
+   system("cls");
+  } while (opcion !=0);
+  getch();
+}
+
+void ALTA_DIRECTA(void)
+{
+  int no_prod; // Variable local para el numero de producto
+  system("cls");
+  cout << "\n\rALTAS DE REGISTROS DE PRODUCTOS";
+  alias=fopen("PRODUCTO.DIR","rb+"); // Intenta abrir el archivo PRODUCTO.DIR
+                                     // en modo de lectura/escritura
+  if(alias==NULL)
+    alias=fopen("PRODUCTO.DIR","wb"); // Crea el archivo en caso de no existir
+  cout << "\n\n\n\rNumero de producto: ";
+  cin >> no_prod;
+  dir_fisica=no_prod*sizeof(Registro); // Calculo de la dir. fisica
+  fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+  fread(&Registro,sizeof(Registro),1,alias); // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  if(Registro.no_prod==no_prod)
+  {
+    cout << "\n\n\n\rRegistro duplicado !!!";
+    fclose(alias);
+    getch();
+    return;
+  }
+  cout << "\n\rDescripcion: ";
+  getchar();
+  gets(Registro.descrip);
+  cout << "\n\rCantidad : ";
+  cin >> Registro.cantidad;
+  cout << "\n\rPrecio : ";
+  cin >> Registro.precio;
+  do {
+    cout << "\n\rGarantia : ";
+    Registro.garantia=toupper(getche());
+  } while(Registro.garantia!='S' && Registro.garantia!='N');
+  Registro.no_prod=no_prod;
+  fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+  fwrite(&Registro,sizeof(Registro),1,alias); // Grabar el Registro completo
+  fclose(alias); // Cierra el archivo
+  cout << "\n\n\n\rProducto registrado !!!";
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+  getch();
+  return;
+}
+
+void CONSULTA_DIRECTA(void)
+{
+ int no_prod; // Variable local para el numero de producto que desea consultar
+ system("cls");
+ cout << "\n\rCONSULTA DE REGISTROS DE PRODUCTOS";
+ alias=fopen("PRODUCTO.DIR","rb"); // Intenta abrir el archivo PRODUCTO.DIR
+                                   // en modo de solo lectura
+ if(alias==NULL)
+ {
+  cout << "\n\n\n\rNo existe el archivo !!!";
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+  getch();
+  return;
+ }
+ cout << "\n\n\n\rNumero de producto: ";
+ cin >> no_prod;
+ dir_fisica=no_prod*sizeof(Registro); // Calculo de la dir. fisica
+ fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+ fread(&Registro,sizeof(Registro),1,alias);
+ // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+ if(Registro.no_prod==no_prod)
+ {
+  cout << "\n\rNo Prod Descripcion Cantidad Precio Garantia";
+  cout << "\n\r------------------------------------------------------------------------\n";
+  cout<<Registro.no_prod<<"\t"<<Registro.descrip<<"\t";
+  cout<<Registro.cantidad<<"\t"<<Registro.precio<<"\t"<<Registro.garantia;
+ }
+ else
+ {
+   cout << "\n\n\n\rNo existe ese registro !!!";
+ }
+ fclose(alias);
+ cout << "\n\n\n\n\r<<< Oprima cualquier tecla para continuar >>>";
+ getch();
+ return;
+}
+
+void MODIFICACION_DIRECTA(void)
+{
+ int no_prod; // Variable local para el numero de producto que deseamodificar
+ system("cls");
+ cout << "\n\rMODIFICACION DE REGISTROS DE PRODUCTOS";
+ alias=fopen("PRODUCTO.DIR","rb+"); // Intenta abrir el archivo PRODUCTO.DIR
+                                    // en modo de lectura/escritura
+ if(alias==NULL) // Valida la existencia del archivo
+ {
+   cout << "\n\n\n\rNo existe el archivo !!!";
+   cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+   getch();
+   return;
+ }
+ cout << "\n\n\n\rNumero de producto: "; cin >> no_prod;
+ dir_fisica=no_prod*sizeof(Registro); // Calculo de la dir. fisica
+ fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+ fread(&Registro,sizeof(Registro),1,alias); // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+ if(Registro.no_prod==no_prod)
+ {
+ cout << "\n\rNo Prod Descripcion Cantidad Precio Garantia";
+ cout << "\n\r------------------------------------------------------------------------";
+ printf("\n\r%3d\t%30s\t%3d\t\t$%4.2f\t%c",Registro.no_prod,Registro.descrip,Registro.cantidad,Registro.precio,Registro.garantia);
+ cout << "\n\n\n\rAnote los nuevos datos ...";
+ cout << "\n\rDescripcion: ";
+ getchar();
+ gets(Registro.descrip);
+ cout << "\n\rCantidad : ";
+ cin >> Registro.cantidad;
+ cout << "\n\rPrecio : ";
+ cin >> Registro.precio;
+ do
+ {
+   cout << "\n\rGarantia : "; Registro.garantia=toupper(getche());
+ }while(Registro.garantia!='S' && Registro.garantia!='N');
+// Es necesario reposicionar el apuntador del archivo al principio del
+// registro que desea modificar, ya que al leer un registro, e // apuntador se posiciona en el registro siguiente
+// La funcion ftell(alias) devuelve la posicion donde se encuentra el
+// apuntador
+ fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+ fwrite(&Registro,sizeof(Registro),1,alias); // Graba el registro con
+// los nuevos campos
+ fclose(alias); // Cierra el archivo
+ cout << "\n\n\n\rRegistro modificado !!!";
+ cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+ getch();
+ return;
+}
+else
+{
+  cout << "\n\n\n\rNo se encuentra ese registro !!!";
+}
+fclose(alias); // Cierra el archivo
+cout << "\n\n\n\n\r<<< Oprima cualquier tecla para continuar >>>";
+getch();
+return;
+}
+
+void BAJA_LOGICA_DIRECTA(void)
+{
+ int no_prod; // Variable local para el numero de producto que desea eliminar
+ char op;
+ system("cls");
+ cout << "\n\rBAJA LOGICA DE REGISTROS DE PRODUCTOS";
+ alias=fopen("PRODUCTO.DIR","rb+"); // Intenta abrir el archivo PRODUCTO.DIR
+ // en modo de lectura/escritura
+ if(alias==NULL) // Valida la existencia del archivo
+ {
+ cout << "\n\n\n\rNo existe el archivo !!!";
+ cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+ getch();
+ return;
+ };
+ cout << "\n\n\n\rNumero de producto: "; cin >> no_prod;
+ dir_fisica=no_prod*sizeof(Registro); // Calculo de la dir. fisica
+ fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+ fread(&Registro,sizeof(Registro),1,alias);
+ // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+ if(Registro.no_prod==no_prod)
+ {
+ cout << "\n\rNo Prod Descripcion Cantidad Precio Garantia";
+ cout << "\n\r------------------------------------------------------------------------";
+ printf("\n\r%3d\t%30s\t%3d\t\t$%4.2f\t%c\n\n\n\n\r",Registro.no_prod,Registro.descrip,Registro.cantidad,Registro.precio,Registro.garantia);Registro.no_prod=0;
+ strcpy(Registro.descrip,"");
+ Registro.cantidad=0;
+ Registro.precio=0.0;
+ Registro.garantia=' ';
+ // Es necesario reposicionar el apuntador del archivo al principio del
+ // registro que desea modificar, ya que al leer un registro, el
+ // apuntador se posiciona en el registro siguiente
+ // La funcion ftell(alias) devuelve la posicion donde se encuentra el
+ // apuntador
+ do
+ {
+ cout << "\n\rEsta seguro que desea eliminar este registro? [S/N] ---> ";
+ op=toupper(getche());
+ }while(op!='S' && op!='N');
+ if(op=='S')
+ {
+ fseek(alias,dir_fisica,SEEK_SET); //Posicionar el apuntador del archivo
+ fwrite(&Registro,sizeof(Registro),1,alias); // Graba el registro con
+    // los nuevos campos
+ cout << "\n\n\n\rRegistro eliminado logicamente !!!";
+ }
+ else
+ {
+ cout << "\n\n\n\rRegistro NO eliminado !!!";
+ }
+ fclose(alias); // Cierra el archivo
+ cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+ getch();
+ return;
+ }
+ else
+ {
+ cout << "\n\n\n\rNo se encuentra ese registro !!!";
+ }
+ fclose(alias); // Cierra el archivo
+ cout << "\n\n\n\n\r<<< Oprima cualquier tecla para continuar >>>";
+ getch();
+ return;
+}
+
+void LISTADO_SEC_DIR(void)
+{
+  system("cls");
+  cout << "\n\rLISTADO DE REGISTROS DE PRODUCTOS";
+  alias=fopen("PRODUCTO.DIR","rb"); // Intenta abrir el archivo PRODUCTO.DIR
+     // en modo de solo lectura
+  if(alias==NULL)
+  {
+    cout << "\n\n\n\rNo existe el archivo !!!";
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+    getch();
+    return;
+  }
+  cout << "\n\rNo Prod Descripcion Cantidad Precio Garantia";
+  cout << "\n\r------------------------------------------------------------------------";
+  fread(&Registro,sizeof(Registro),1,alias);
+  // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  while(!feof(alias)) // Ciclo mientras no se encuentre el final del archivo
+  {
+    printf("\n\r%3d\t%30s\t%3d\t\t$%4.2f\t%c",Registro.no_prod,Registro.descrip,Registro.cantidad,Registro.precio,Registro.garantia);
+    fread(&Registro,sizeof(Registro),1,alias);
+  }
+  fclose(alias); // Cierra el archivo
+  cout << "\n\r------------------------------------------------------------------------";
+  cout << "\n\rFin del listado !!!";
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>";
+  getch();
+  return;
+}
