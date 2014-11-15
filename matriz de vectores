@@ -1,0 +1,120 @@
+#include <stdafx.h>
+#include <conio.h>
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+#define fil 10
+#define col 10
+
+struct elemMat {
+	int vec[fil];
+};
+void cargar(elemMat mat[fil][col],int n, int m) {
+	int i,j,k;
+	for(i=0;i<n;i++) {
+		for(j=0;j<m;j++) {
+			for(k=0;k<m;k++) {
+				cout<<"Introducir mat["<<i<<","<<j<<","<<k<<"] ";
+				cin>>mat[i][j].vec[k];
+
+			}
+		}
+		cout<<endl;
+	}
+} 
+void mostrar(elemMat mat[fil][col],int n, int m) {
+	int i,j,k;
+	cout<<"La matriz de vectores es: " <<endl;
+	for(i=0;i<n;i++) {
+		for(j=0;j<m;j++) {
+			for(k=0;k<m;k++) {
+				cout<<mat[i][j].vec[k]<<" ";
+			}
+			cout<<" ";
+		}
+		cout<<endl;
+	}
+} 
+void mostrarVector(elemMat vector[],int n){
+	int i,k;
+	cout<<"La suma de la matriz de vectores es: "<<endl;
+	for(i=0;i<n;i++) {
+		for(k=0;k<n;k++) {
+			cout<<vector[i].vec[k]<<" ";
+		}
+		cout<<endl;
+	}
+
+}
+void obtenerVecSuma(elemMat mat[fil][col],int n, int m, elemMat vector[]){
+	int i,j,k;
+	for(i=0;i<n;i++) {
+		for (j=0;j<m;j++) {
+			vector[i].vec[j]=0;
+			for(k=0;k<n;k++){
+				vector[i].vec[j]=vector[i].vec[j]+ mat[i][j].vec[k];
+			}
+		}
+	}
+}
+void cargarAleatoriamente(elemMat mat[fil][col],int n, int m) {
+	int i,j,k;
+	for(i=0;i<n;i++) {
+		for(j=0;j<m;j++) {
+			for(k=0;k<m;k++) {
+				mat[i][j].vec[k]= rand() %100;
+
+			}
+		}
+		cout<<endl;
+	}
+}
+int sumarVector(int vec1[],int p){
+	int i,s=0;
+	for(i=0;i<p;i++) {
+		s=s+vec1[i];
+	}
+	return(s);
+}
+bool verificarOrden(int vec1[],int p){
+	int i,k=true;
+	for(i=0;i<p-1;i++) {
+		if(vec1[i+1]<vec1[i]) {
+			k=false;
+		}
+	}
+	return (k);
+}
+void sumaDeVectoresOrdenados(elemMat mat[fil][col],int n, int m, elemMat vector[]){
+	int i,j,k;
+	for(i=0;i<n;i++) {
+		for (j=0;j<m;j++) {
+			vector[i].vec[j]=0;
+			if(verificarOrden(mat[i][j].vec,n)==true){
+				for(k=0;k<m;k++) {
+					vector[i].vec[j]=vector[i].vec[j]+mat[i][j].vec[k];
+				}
+			
+			}
+			
+		}
+	}
+}
+int main () {
+	int n,m;
+	elemMat mat[fil][col];
+	elemMat vector[fil];
+	cout<<"Ingrese cuantas filas desea: ";
+	cin>>n;
+	cout<<"Ingrese cuantas columnas desea: ";
+	cin>>m;
+	cargarAleatoriamente(mat,n,m);
+	mostrar(mat,n,m);
+	obtenerVecSuma(mat, n, m, vector);
+	mostrarVector(vector,n);
+	sumaDeVectoresOrdenados(mat,n, m, vector);
+	mostrarVector(vector,n);
+	getch();
+	return(0);
+}
