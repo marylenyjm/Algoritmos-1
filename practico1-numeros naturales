@@ -1,0 +1,333 @@
+NUMEROS NATURALES
+
+///*NUMEROS NATURALES. MARY LENY JUSTINIANO
+#include "stdafx.h"
+#include <iostream>
+#include <conio.h>
+#include <math.h>
+#include <stdlib.h> 
+#include <time.h>
+
+using namespace std;
+
+int contarDigitos(int Num){
+	int d=0;
+		while(Num>0){
+		Num=Num/10;
+		d++;
+		}
+	return(d);
+}	
+
+int unirNumMayorAlMenor(int Num1, int Num2){
+	int d, r;
+		if(Num1<Num2){
+		d=contarDigitos(Num2);
+		r=(Num1*powf(10,d))+Num2;
+		}
+		else{
+		d=contarDigitos(Num1);
+		r=(Num2*powf(10,d))+Num1;
+		}
+		return(r);
+}
+
+int digRepetido(int Num){
+	int s, aux, d1, d2, c;
+	aux=Num;
+	while(Num>0){
+		d1=Num%10;
+		c=0;
+		s=aux;
+		while(s>0){
+			d2=s%10;
+			if(d2==d1){
+				c++;
+			}
+			s=s/10;
+		}
+		if(c>1){
+			return(d1);
+		}
+		Num=Num/10;
+	}
+	return(-1);
+}
+
+int eliminarDig(int Num, int dig){
+	int x,s=0,m=1;
+		while(Num>0){
+			x=Num%10;
+			if(x!=dig){
+				s=s+(x*m);
+				m=m*10;
+			}
+			Num=Num/10;
+		}
+		return(s);
+}
+
+
+void eliminarRepetidos(){
+	int Num,d;
+		cout<<"Ingrese un numero: ";
+		cin>>Num;
+		d=digRepetido(Num);
+		while(d!=(-1)){
+			Num=eliminarDig(Num,d);
+			d=digRepetido(Num);
+		}
+		cout<<Num;
+}
+
+
+int eliminarDigMayor(int Num){
+	int Mayor=0,d,NuevoNum=0,c=0,Num1;
+		Num1=Num;
+		while(Num>0){
+			d=Num%10;
+			Num=Num/10;
+			if(d>Mayor){
+			Mayor=d;
+			}
+		}
+		while(Num1>0){
+			d=Num1%10;
+			Num1=Num1/10;
+			if(d!=Mayor){
+				NuevoNum=NuevoNum+(d*powf(10,c));
+				c++;
+			}
+		}
+	return(NuevoNum);
+}
+
+int numOrdenado(int Num){
+	int menor=10, band=0,d;
+		while(Num>0){
+			d=Num%10;
+			Num=Num/10;
+			if(menor>d){
+				menor=d;
+			}
+			else{
+			band=1;
+			}
+		}
+		return(band);
+}
+
+int insertarNumLugarCorresp(int Num){
+	int band,dig,NuevoNum=0,c=0,d1,d2,bande=0;
+		band=numOrdenado(Num);
+		while(band==1){
+		cout<<"Ingrese otro numero: ";
+		cin>>Num;
+		band=numOrdenado(Num);
+		}
+		cout<<"Ingrese un digito: ";
+		cin>>dig;
+
+		while(Num>0){
+			d1=Num%10;
+			Num=Num/10;
+			if(dig>d1 && bande==0){
+				NuevoNum=NuevoNum + (dig*powf(10,c));
+				c++;
+				NuevoNum=NuevoNum + (d1*powf(10,c));
+				c++;
+				bande=1;
+			}
+			else{
+				NuevoNum=NuevoNum + (d1*powf(10,c));
+				c++;
+			}
+
+		}
+		if(bande==0){
+			NuevoNum=NuevoNum + (dig*powf(10,c));
+		}
+		return(NuevoNum);
+	}
+
+int invertirNum(int Num){
+	int inv=0;
+		while (Num != 0){
+			inv = inv * 10;
+			inv = inv + Num % 10;
+			Num = Num / 10;
+	}
+	return(inv);
+}
+
+void verificarCapicua(int Num1){
+	int Num2;
+		Num2=invertirNum(Num1);
+		if(Num1==Num2){
+		cout<<"El numero es capicua.";
+		}
+		else{
+		cout<<"El numero NO es capicua.";
+		}
+}
+
+int pagoDeHorasTrabajadas (int Num1){
+	int r, h=20, i, b;
+	for(i=1;i<=Num1;i++){
+		cout<<endl<<endl<<"Horas Trabajadas por el trabajador  "<<i<<": ";
+		cin>>b;
+		r=h*b;
+		cout<<endl<<endl<<"El obrero "<<i<< " recibira "<<r<< "bs";
+			}
+	getch();
+	return(r);
+}
+
+void juegoADIVINAR(int Num)	{
+	int aleatorio;
+		srand(time(NULL));
+		aleatorio=1+rand()%(101-1);
+		
+		while(Num!=aleatorio){
+			if(Num>aleatorio){
+			cout<<"Demasiado grande";	
+			}
+			else{
+			cout<<"Demasiado chico";
+			}
+			cout<<endl<<"Ingrese otro numero: ";
+			cin>>Num;
+		}
+		cout<<"Correcto!";
+}
+
+int crapulo(int Num){
+	int band=1,crpl,d;
+		while(band==1){
+			crpl=0;
+			while(Num>0){
+			d=Num%10;
+			crpl=crpl+d;
+			Num=Num/10;
+			}
+			if(crpl<10){
+			band=0;
+			}
+			Num=crpl;
+		}	
+	return(crpl);
+}
+
+void automorfico(int Num1){
+	int r,Num2,d1,d2,band=0;
+		r=Num1;
+		Num2=powf(Num1,2);
+		d1=contarDigitos(Num1);
+		while(Num1>0 && band==0){
+			d1=Num1%10;
+			Num1=Num1/10;
+			d2=Num2%10;
+			Num2=Num2/10;
+			if(d1!=d2){
+			band=1;
+			}
+		}
+		if(band==0){
+		cout<<"SI es automorfico.";
+		}
+		else{
+		cout<<"NO es automorfico.";
+		}
+}
+void genautomorfico(){
+	int i, aux, b,c,d;
+	for(i=0;i<1000;i++){
+		aux=powf(i,2);
+		b=contarDigitos(i);
+		d=powf(10,b);
+		c=aux%d;
+		if(i==c){
+			cout<<i<<"  ";
+		}
+	}
+}
+
+int main(){
+	int opcion, Num1, Num2, r;
+		do{
+		cout<<endl<<endl<<"------- MENU -------";
+		cout<<endl<<endl<<"1.- Concatenar el numero mayor al menor";
+		cout<<endl<<"2.- Depurar los digitos repetidos";
+		cout<<endl<<"3.- Invertir numero";
+		cout<<endl<<"4.- Eliminar el digito mayor de un numero";
+		cout<<endl<<"5.- Insertar digito en el lugar que le corresponde";
+		cout<<endl<<"6.- Verificar si un numero es Capicua";
+		cout<<endl<<"7.- Planilla de cancelacion";
+		cout<<endl<<"8.- Juego: ADIVINAR";
+		cout<<endl<<"9.- Obtener crapulo de un numero";
+		cout<<endl<<"10.- Numeros automorficos menores que mil";
+		cout<<endl<<"0.- Salir";
+		cout<<endl<<endl<<"Opcion:  ";
+		cin >> opcion;
+		switch(opcion){
+			case 1: cout<<endl<< "Ingrese el primer numero natural: ";
+					cin >> Num1;
+					cout<<endl<< "Ingrese el segundo numero natural: ";
+					cin >> Num2;
+					r=unirNumMayorAlMenor(Num1, Num2);
+					cout<<endl<< r;
+					getch();
+					break;
+			case 2: eliminarRepetidos();
+					getch();
+					break;
+			case 3: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					r=invertirNum(Num1);
+					cout<<endl<< r;
+					getch();
+					break;
+			case 4: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					r=eliminarDigMayor(Num1);
+					cout<<endl<< r;
+					getch();
+					break;
+			case 5: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					r=insertarNumLugarCorresp(Num1);
+					cout<<endl<< r;
+					getch();
+					break;
+			case 6: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					verificarCapicua(Num1);
+					getch();
+					break;
+			case 7: cout<<endl<<"Numero de trabajadores: ";
+					cin>>Num1;
+				    r=pagoDeHorasTrabajadas(Num1);
+					getch();
+					break;
+			case 8: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					juegoADIVINAR(Num1);
+					getch();
+					break;
+			case 9: cout<<endl<< "Ingrese un numero natural: ";
+					cin >> Num1;
+					r=crapulo(Num1);
+					cout<<endl<< r;
+				getch();
+					break;
+			case 10:cout<<endl<< "Los numeros automorficos menores a 1000 son: ";
+					genautomorfico();
+					getch();
+					break;
+		}
+	}while(opcion !=0);
+
+
+	getch();
+	return(1);
+}
