@@ -1,0 +1,66 @@
+#include "stdafx.h"
+#include "stdio.h"
+#include "conio.h"
+#include <iostream>
+#include <string>
+ 
+using namespace std;
+
+struct regAlumno
+{char nombre[30];
+ char sexo;
+ int nota;
+};
+
+void cargar(regAlumno alum[], int n)
+{int i;
+ for(i=0;i<n;i++)
+ {cout<<"\nNombre: ";
+  fflush(stdin);
+  gets(alum[i].nombre);
+  fflush(stdin);
+  cout<<"\nSexo: ";
+  cin>>alum[i].sexo;
+  cout<<"\nNota: ";
+  cin>>alum[i].nota;
+ }
+}
+
+void mostrar(regAlumno alum[], int n)
+{int i;
+ for(i=0;i<n;i++)
+ {cout<<"\nNombre: "<<alum[i].nombre;
+  cout<<"\nSexo<F/N>: "<<alum[i].sexo;
+  cout<<"\nNota: "<<alum[i].nota;
+ }
+}
+
+void promedio(regAlumno alum[],int n)
+{int i,ch=0,cm=0,sumaNotaH=0,sumaNotaM=0;
+ for(i=0;i<n;i++)
+ {if(alum[i].sexo=='M')
+   {ch++;
+    sumaNotaH=sumaNotaH+alum[i].nota;
+   }
+  if(alum[i].sexo=='F')
+   {cm++;
+    sumaNotaM=sumaNotaM+alum[i].nota;
+   }
+ }
+ if(ch!=0)
+ {cout<<"El promedio de notas de hombres es: "<<(sumaNotaH/ch);
+ }
+  if(cm!=0)
+ {cout<<"El promedio de notas de mujeres es: "<<(sumaNotaM/cm);
+ }
+}
+
+int main()
+{regAlumno vec[80];
+ int n;
+ cout<<"Introducir el numero de alumnos: ";
+ cin>>n;
+ cargar(vec,n);
+ mostrar(vec,n);
+ promedio(vec,n);
+ getch();
