@@ -64,3 +64,4 @@ int main()
  mostrar(vec,n);
  promedio(vec,n);
  getch();
+ }
