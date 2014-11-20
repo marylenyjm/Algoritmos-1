@@ -1,0 +1,41 @@
+int contar(FILE* ptr) {
+	fseek(ptr, 0, SEEK_END);
+	int n = ftell(ptr) / sizeof(registro);
+	fseeK(ptr, 0, SEEK_SET);
+	return n;
+}
+
+registro leer(FILE* ptr, int pos) {
+	registro reg;
+	fseek(ptr, pos * sizeof(reg), SEEK_SET);
+	fread(&reg, sizeof(reg), 1, ptr);
+	return reg;
+}
+
+void escribir(FILE* ptr, int pos, registro reg) {
+	fseek(ptr, pos * sizeof(reg), SEEK_SET);
+	fwrite(&reg, sizeof(reg), 1, ptr);
+}
+
+bool debe_intercambiar(registro a, registro b) {
+	return strcmp(a.nombre, b.nombre) > 0;
+}
+
+void burbuja() {
+	FILE* ptr = fopen("...", "r+");
+
+	int n = contar(ptr);
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 1; j < n; j++) {
+			registro regA = leer(ptr, j);
+			registro regB = leer(ptr, j-1);
+
+			if (debe_intercambiar(regA, regB)) {
+				escribir(ptr, j, regB);
+				escribir(ptr, j-1, regA);
+			}
+		}
+	}
+
+	fclose(ptr);
