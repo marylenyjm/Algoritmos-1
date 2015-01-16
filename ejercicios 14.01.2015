@@ -1,0 +1,102 @@
+// intensivo1.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "stdio.h"
+#include "conio.h"
+#include "math.h"
+#include "stdlib.h"
+#include <iostream>
+
+using namespace std;
+
+float POTEN (float x, int y);
+int FAC(int n);
+int SERIE(float x, int N);
+
+int main ()
+{
+	float a,d;
+	int b,c;
+	int op;
+
+	do
+	{
+	cout<<endl<<endl<<"-----MENU-----";
+	cout<<endl<<"1. Potencia ";
+	cout<<endl<<"2. Factorial de un numero";
+	cout<<endl<<"3. Serie 1";
+	cout<<endl<<"4. Salir";
+	cout<<endl<<"Elija una opcion: ";
+	cin>>op;
+
+	switch(op)
+	{
+	case 1:
+		cout<<"Ingrese la base: ";
+		cin>>a;
+		cout<<"Ingrese el exponente: ";
+		cin>>b;
+		c=POTEN (a,b);
+		cout<<"El resultado es: "<<c<<endl;
+		getch();
+		break;
+	case 2:
+		cout<<"Ingrese el numero: ";
+		cin>>b;
+		c=FAC(b);
+		cout<<"El factorial de "<<b<<" es: "<<c<<endl;
+		getch();
+		break;
+	case 3:
+		cout<<"Ingrese la base de la potencia: ";
+		cin>>a;
+		cout<<"Ingrese el exponente y long de la serie: ";
+		cin>>b;
+		d=SERIE(a,b);
+		cout<<"El resultado de la serie es: "<<d;
+		getch();
+		break;
+	}
+	}while (op!=4);
+	getch();
+	return 0;
+}
+
+float POTEN(float x, int y)
+{
+	float p=1;
+	for(int i=1; i<=y; i++)
+	{
+		p=p*x;
+	}
+	return p;
+}
+
+int FAC(int n)
+{
+	int f=1;
+	if (n==1)
+		f=1;
+	else
+	{
+	for(int i=1; i<=n; i++)
+	{
+		f=f*i;
+	}
+	}
+	return f;
+}
+
+int SERIE(float x, int N)
+{
+	float s=0;
+	int f=1;
+	
+	for(int i=1; i<=N; i++)
+	{
+		s=s+ (pow(x,i))/f;
+		f=f*(i+1);
+	}
+	return s;
+}
